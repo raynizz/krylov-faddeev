@@ -76,7 +76,7 @@ namespace krylov_faddeev
                 InitializeOutputLabels();
                 Graphic.DrawGraph(coefficients, eigenValues);
                 outputMatrix = inputMatrix;
-               //SaveInFile();
+                SaveInFile();
             }
             catch (Exception ex)
             {

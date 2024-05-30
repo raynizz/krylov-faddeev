@@ -205,7 +205,6 @@ namespace krylov_faddeev
             for (int i = 0; i < vector.Length; i++)
             {
                 
-                //MainForm.difficulty++;
                 magnitude += vector[i] * vector[i];
             }
 
@@ -214,7 +213,6 @@ namespace krylov_faddeev
 
             for (int i = 0; i < vector.Length; i++)
             {
-                //MainForm.difficulty++;
                 result[i] = vector[i] / magnitude;
             }
 

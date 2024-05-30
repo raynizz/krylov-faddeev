@@ -68,6 +68,7 @@ namespace krylov_faddeev
                         break;
 
                     default:
+                        throw new ArgumentException("Invalid solution method selected.");
                         break;
                 }
 

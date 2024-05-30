@@ -49,6 +49,7 @@ namespace krylov_faddeev
 
         public static void DrawGraph(double[] coefficients, double[] roots)
         {
+            // Створення нової форми для відображення графіка
             Form graphForm = new Form
             {
                 Text = "Polynomial Graph",
@@ -56,13 +57,16 @@ namespace krylov_faddeev
                 Height = 600
             };
 
+            // Створення елемента PlotView для розміщення графіка
             var plotView = new PlotView
             {
                 Dock = DockStyle.Fill
             };
 
+            // Створення моделі графіка для визначення його зовнішнього вигляду та поведінки
             var plotModel = new PlotModel { Title = "Polynomial Graph" };
 
+            // Визначення осі X
             var xAxis = new LinearAxis
             {
                 Position = AxisPosition.Bottom,
@@ -75,6 +79,7 @@ namespace krylov_faddeev
                 IsPanEnabled = true
             };
 
+            // Визначення осі Y
             var yAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
@@ -88,24 +93,30 @@ namespace krylov_faddeev
 
             };
 
+            // Додавання осей до моделі графіка
             plotModel.Axes.Add(xAxis);
             plotModel.Axes.Add(yAxis);
 
+            // Створення серії ліній для представлення кривої полінома
             var lineSeries = new LineSeries();
 
+            // Визначення діапазону для осі X на основі коренів
             double startX = findMin(roots) - 1;
             double endX = findMax(roots) + 1;
             double step = 0.1;
 
+            // Обчислення значень полінома у визначеному діапазоні та додавання їх до серії
             for (double x = startX; x <= endX; x += step)
             {
                 double y = Polynom(coefficients, x);
                 lineSeries.Points.Add(new DataPoint(x, y));
             }
 
+            // Додавання серії ліній до моделі графіка
             plotModel.Series.Add(lineSeries);
             plotView.Model = plotModel;
 
+            // Додавання PlotView до форми та її відображення
             graphForm.Controls.Add(plotView);
             graphForm.ShowDialog();
         }

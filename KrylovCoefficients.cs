@@ -48,15 +48,17 @@ public class KrylovCoefficients
         double[] tempVector = GetVectorE(matrix.GetLength(0), 0);
         vectors.Add(tempVector);
 
+        // Попередній добуток вектора матрицю, знову множиться на ту ж початкову матрицю
         for (int i = 1; i <= tempVector.Length; i++)
         {
-            //MainForm.difficulty++;
             tempVector = MultiplyMatrixByVector(matrix, tempVector);
             vectors.Add(tempVector);
         }
 
+        // Змінюємо порядок векторів та рахуємо СЛАР
         double[] coefficients = GaussianElimination(VectorsToMatrix(VectorsSwap(vectors)));
 
+        // Додаємо -1 в якості першого коефіцієнта, та міняєм знак коефіцієнтів, якщо розмірність матриці парна
         return NormalizeCoefficients(coefficients, matrix);
 
     }

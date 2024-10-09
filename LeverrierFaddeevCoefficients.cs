@@ -14,8 +14,8 @@ public class LeverrierFaddeevCoefficients
         int n = matrix.GetLength(0);
         double[] coefficients = new double[n + 1];
 
+        // Дожаємо до списку коефіцієнтів константу -1
         coefficients[0] = -1;
-
 
         double[,] tempMatrix = matrix;
         double tempC = Sp(matrix);
@@ -23,6 +23,7 @@ public class LeverrierFaddeevCoefficients
         double[,] matrixB = SubtractionMatrix(tempMatrix,
             MultiplyMatrixByScalar(GetMatrixE(n), tempC));
 
+        // Рахуємо допоміжні матриці В за рекурентною формулою
         for (int i = 2; i <= n; i++)
         {
             tempMatrix = MultiplyMatrixByMatrix(matrix, matrixB);
@@ -33,6 +34,7 @@ public class LeverrierFaddeevCoefficients
                 MultiplyMatrixByScalar(GetMatrixE(n), tempC));
         }
 
+        // Якщо матриця парна, то міняємо знаки коефіцієнтів характеристичного поліному
         if (n % 2 == 0)
         {
             for (int i = 0; i < coefficients.Length; i++)

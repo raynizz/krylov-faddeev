@@ -17,7 +17,6 @@ public class KrylovEigenvectors
 
         for (int i = 1; i <= tempVector.Length; i++)
         {
-            //MainForm.difficulty++;
             tempVector = MultiplyMatrixByVector(matrix, tempVector);
             vectors.Add(tempVector);
         }
@@ -30,6 +29,8 @@ public class KrylovEigenvectors
         double[] result = new double[n];
         result[0] = 1;
 
+        // Починаємо з 1, а попередній результат множимо на власне значення і додаємо чи
+        // віднімаємо коефіцієнт в залежності від парності вхідної матриці
         for (int i = 1; i < n; i++)
         {
             MainForm.difficulty++;
@@ -50,19 +51,25 @@ public class KrylovEigenvectors
     public static double[,] CalculateKrylovVectors(double[,] A, double[] eigenvalues, double[] coefficients)
     {
         int n = A.GetLength(0);
+        // як для коефіцієнтів знаходимо ті ж самі вектори СЛАР
         List<double[]> vectorsY = CalculateVectorsY(A);
         List<double[]> eigenVectors = new List<double[]>();
 
+        
         for (int i = 0; i < eigenvalues.Length; i++)
         {
             double[] tempEigenVector = new double[n];
+            // Для кожного власного вектора рахуємо масив допоміжних значень q
             double[] q = CalculateQ(eigenvalues[i], coefficients, n);
+
+            // За рекурентною формулою рахуємо ненормований власний вектор
+            // Просто множимо передостанній вектор СЛАР на перше значення q і так по колу
             for (int j = 1; j <= n; j++)
             {
-                //MainForm.difficulty++;
                 tempEigenVector = SumOfVectors(tempEigenVector, MultiplyVectorByScalar(vectorsY[^(j + 1)], q[j - 1]));
             }
 
+            // Нормуємо вектор на його довжину
             eigenVectors.Add(NormalizeVector(tempEigenVector));
         }
 

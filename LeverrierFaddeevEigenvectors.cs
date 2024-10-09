@@ -11,6 +11,7 @@ public class LeverrierFaddeevEigenvectors
 {
     private static List<double[]> GetFaddeevVectorB(double[,] matrix, int colmIndex)
     {
+        // Знаходимо вектори B за рекурентною формулою аналогічно пошуку коефіцієнтів
         int n = matrix.GetLength(0);
         List<double[]> result = new List<double[]>();
 
@@ -49,23 +50,29 @@ public class LeverrierFaddeevEigenvectors
     public static double[,] CalculateFaddeevEigenvectors(double[,] matrixA, double[] eigenvalues)
     {
         List<double[]> result = new List<double[]>();
+
+        // Для кожного власного значення знаходимо власний вектор
         for (int i = 0; i < eigenvalues.Length; i++)
         {
             double[] eigenvector;
             int tempColm = 0;
             do
             {
+                // Знаходимо стовпці матриць B за тіє самою рекурентною формулою, що і в пошуку коефіцієнтів
                 List<double[]> vectorB = GetFaddeevVectorB(matrixA, tempColm);
                 eigenvector = GetVectorE(vectorB[0].Length, tempColm);
+                // За рекурентною формулою знаходимо ненормований власний вектор
                 foreach (var tempVectorB in vectorB)
                 {
                     eigenvector = MultiplyVectorByScalar(eigenvector, eigenvalues[i]);
                     eigenvector = SumOfVectors(eigenvector, tempVectorB);
                 }
 
+                // Якщо вектор нульовий, то переходимо до наступного стовпця, і так поки не знайдемо ненульовий
                 tempColm++;
             } while (IsVectorZero(eigenvector) && tempColm < matrixA.GetLength(0));
 
+            // Нормалізуємо власний вектор
             result.Add(NormalizeVector(eigenvector));
         }
 

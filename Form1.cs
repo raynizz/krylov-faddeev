@@ -68,6 +68,7 @@ namespace krylov_faddeev
                         break;
 
                     default:
+                        throw new ArgumentException("Invalid solution method selected.");
                         break;
                 }
 
@@ -76,7 +77,7 @@ namespace krylov_faddeev
                 InitializeOutputLabels();
                 Graphic.DrawGraph(coefficients, eigenValues);
                 outputMatrix = inputMatrix;
-               //SaveInFile();
+                SaveInFile();
             }
             catch (Exception ex)
             {
@@ -144,6 +145,7 @@ namespace krylov_faddeev
         {
             InitializeMatrix();
             CheckSolveButtonState();
+            CheckGenerateMatrixButtonState();
         }
 
         private void CheckSolveButtonState()
@@ -161,6 +163,7 @@ namespace krylov_faddeev
                 tb.Text = string.Empty;
             }
             CheckSolveButtonState();
+            CheckGenerateMatrixButtonState();
         }
 
         private double[,] ReadMatrix()
@@ -203,6 +206,7 @@ namespace krylov_faddeev
             var randomMatrix = MatrixVectorMath.GenerateRandomMatrix(Int32.Parse(MatrixSize.Text),
                 double.Parse(MinValueTextBox.Text), double.Parse(MaxValueTextBox.Text));
             FillEmptyMatrixFields(randomMatrix);
+            CheckGenerateMatrixButtonState();
         }
 
         private void CheckGenerateMatrixButtonState()
@@ -211,7 +215,8 @@ namespace krylov_faddeev
             bool isMinValid = double.TryParse(MinValueTextBox.Text, out minValue);
             bool isMaxValid = double.TryParse(MaxValueTextBox.Text, out maxValue);
 
-            if (isMinValid && isMaxValid && minValue < maxValue && maxValue - minValue > 1 && AreMatrixFieldsEmpty())
+            if (isMinValid && isMaxValid && minValue < maxValue && maxValue - minValue > 1 && AreMatrixFieldsEmpty()
+                && minValue >= -1000 && maxValue <= 1000)
             {
                 GenerateMatrixButton.Enabled = true;
             }
